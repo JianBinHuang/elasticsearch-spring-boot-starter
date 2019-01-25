@@ -3,8 +3,7 @@ package cn.codesheep.config;
 import cn.codesheep.auto.EsProperties;
 import cn.codesheep.dto.DocModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -14,6 +13,7 @@ import java.util.List;
 
 @Component
 @Configuration
+@EnableConfigurationProperties(EsProperties.class)
 public class DocFieldsConfig {
 
     @Autowired
