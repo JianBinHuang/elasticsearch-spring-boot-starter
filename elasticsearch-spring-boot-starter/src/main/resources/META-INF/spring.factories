@@ -1,2 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.codesheep.auto.EsAutoConfiguration
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.codesheep.config.DocFieldsConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.codesheep.auto.EsAutoConfiguration,cn.codesheep.config.DocFieldsConfig
