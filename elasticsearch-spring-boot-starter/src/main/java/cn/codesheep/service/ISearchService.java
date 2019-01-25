@@ -8,6 +8,7 @@ import cn.codesheep.dto.SingleDoc;
 import java.util.ArrayList;
 import java.util.Map;
 
+
 public interface ISearchService {
 
     Boolean createIndex(IndexModel indexModel);  // 创建索引
