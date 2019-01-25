@@ -12,4 +12,5 @@ public class EsAutoConfiguration {
     ISearchService iSearchService() {
         return new SearchServiceImpl();
     }
+
 }
