@@ -2,7 +2,13 @@ package cn.codesheep.config;
 
 import cn.codesheep.auto.EsProperties;
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
@@ -40,11 +46,29 @@ public class ElasticSearchConfig {
     @Bean
     public RestHighLevelClient esRestHighLevelClient() {
 
-        RestHighLevelClient client = new RestHighLevelClient(
+        RestHighLevelClient restHighLevelClient = null;
+        if( null!=esProperties.getAuth() && "true".equals( esProperties.getAuth().get("enable")) ) {
+
+            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            credentialsProvider.setCredentials( AuthScope.ANY,new UsernamePasswordCredentials( esProperties.getAuth().get("username"), esProperties.getAuth().get("password") ));
+
+            RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost( esProperties.getHost(), esProperties.getHttpPort() ))
+                    .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+                        @Override
+                        public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+                            return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+                        }
+                    });
+
+            restHighLevelClient = new RestHighLevelClient(restClientBuilder);
+            return restHighLevelClient ;
+        }
+
+        restHighLevelClient = new RestHighLevelClient(
                 RestClient.builder(
                         new HttpHost( esProperties.getHost(), esProperties.getHttpPort(), "http" )
                 )
         );
-        return client;
+        return restHighLevelClient;
     }
 }
